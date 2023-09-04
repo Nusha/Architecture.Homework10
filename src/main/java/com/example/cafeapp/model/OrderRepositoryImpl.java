@@ -1,4 +1,5 @@
 package com.example.cafeapp.model;
+
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class OrderRepositoryImpl implements OrderRepository {
-    private LoadingCache<String, Order> cache;
+    private final LoadingCache<String, Order> cache;
 
     public OrderRepositoryImpl() {
         cache = Caffeine.newBuilder()
@@ -17,7 +18,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .build(this::loadOrderFromDb);
     }
 
-    private Order loadOrderFromDb(String id){
+    private Order loadOrderFromDb(String id) {
         Order order = null;
         DbCredentials db = new DbCredentials();
         String sql = "SELECT * FROM Orders WHERE id = ?";
@@ -30,7 +31,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
             if (rs.next()) {
                 order = new Order();
-                // Assuming your Order object has properties that match columns in your Orders table
+
                 order.setId(rs.getString("id"));
                 // Set other properties of order from the ResultSet
             }
@@ -52,7 +53,7 @@ public class OrderRepositoryImpl implements OrderRepository {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, order.getId());
-            // Set other parameters based on the properties of order
+
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -60,7 +61,7 @@ public class OrderRepositoryImpl implements OrderRepository {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            // Handle exceptions as appropriate for your application
+
         }
 
         return order;
@@ -81,13 +82,13 @@ public class OrderRepositoryImpl implements OrderRepository {
 
             if (rs.next()) {
                 order = new Order();
-                // Assuming your Order object has properties that match columns in your Orders table
+
                 order.setId(rs.getString("id"));
-                // Set other properties of order from the ResultSet
+
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            // Handle exceptions as appropriate for your application
+
         }
 
         return order;
@@ -109,18 +110,17 @@ public class OrderRepositoryImpl implements OrderRepository {
             while (rs.next()) {
                 Order order = new Order();
                 order.setId(rs.getString("id"));
-                // Set other properties of order from the ResultSet
+
                 orders.add(order);
                 cache.put(order.getId(), order);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            // Handle exceptions as appropriate for your application
+
         }
 
         return orders;
     }
-
 
 
     @Override
@@ -142,9 +142,9 @@ public class OrderRepositoryImpl implements OrderRepository {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            // Handle exceptions as appropriate for your application
+
         }
     }
 
-    // Similar caching logic can be applied to other methods
+
 }

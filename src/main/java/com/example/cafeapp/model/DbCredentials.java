@@ -1,5 +1,6 @@
 package com.example.cafeapp.model;
 
+//Класс соединения с БД
 public class DbCredentials {
     private String dbUrl;
     private String dbUser;
