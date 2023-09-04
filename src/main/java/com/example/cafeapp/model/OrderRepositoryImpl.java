@@ -33,11 +33,11 @@ public class OrderRepositoryImpl implements OrderRepository {
                 order = new Order();
 
                 order.setId(rs.getString("id"));
-                // Set other properties of order from the ResultSet
+
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            // Handle exceptions as appropriate for your application
+
         }
 
         return order;
